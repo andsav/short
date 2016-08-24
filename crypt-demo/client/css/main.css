@@ -1,0 +1,86 @@
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700);
+@import url(https://fonts.googleapis.com/css?family=Cabin);
+
+body {
+    padding: 0 5%;
+    background: url(/client/img/pix.png) #111;
+}
+
+#wrap {
+    border: 1px solid #eee;
+    margin: 0% 5%;
+    background-color: #fefefe;
+}
+
+.menu .col-md-4 {
+    padding-bottom: 20px;
+    opacity: 0.85;
+}
+
+#wrap .col-md-4:hover {
+    opacity: 1;
+}
+
+#links {
+    border: 1px solid #eee;
+    border-bottom: none;
+    background-color: #fefefe;
+    margin: 10% 5% 0 5%;
+    font-weight: bold;
+}
+
+.menu .col-md-4:first-child, .menu .col-md-4:nth-child(2) {
+    border-right: 1px solid #eee;
+}
+
+.menu .col-md-4:first-child hr {
+    margin-left: 10px;
+}
+
+.menu h3 {
+    font-family: 'Cabin', sans-serif;
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 25px;
+}
+
+.menu ul, .menu dl, .font-mono {
+    font-family: "Inconsolata", monospace !important;
+}
+
+
+h4 {
+    font-family: 'Cabin', sans-serif;
+    font-weight: bold !important;
+}
+
+.modal-content, .modal-header, .modal-body {
+    border-radius: 0 !important;
+}
+
+.row {
+    margin-top: 20px;
+}
+
+.row:first-child, .menu {
+    margin-top: 0 !important;
+}
+
+label {
+    margin-top: 7px;
+}
+
+.form-control, .btn-group, label, .btn, .navbar, .navbar-header, .nav, .navbar-nav {
+    border-radius: 0 !important;
+}
+
+input {
+    font-family: "Inconsolata", monospace !important;
+}
+
+.dl-horizontal dt {
+    width: 120px !important;
+}
+.dl-horizontal dd {
+    margin-left: 130px !important;
+}
