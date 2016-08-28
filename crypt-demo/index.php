@@ -1,8 +1,4 @@
 <?php
-/*
- * This is the point of entry
- */
-
 $startTime = microtime(true);
 
 // Get the requested path as an array, disregarding empty elements

@@ -18,7 +18,7 @@ elseif(!empty(PATH)) _404();
     <title>CO487 Implementations</title>
 
     <link rel="stylesheet" href="/client/css/main.css">
-    <link rel="stylesheet" href="/client/css/bootstrap.css">
+    <link rel="stylesheet" href="/client/bower_components/bootstrap/dist/bootstrap.min.css">
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -91,13 +91,13 @@ elseif(!empty(PATH)) _404();
         </div>
     </div>
 
-    <script src="/client/js/big.min.js"></script>
+    <script src="/client/bower_components/big.js/big.min.js"></script>
 
-    <script src="/client/js/jquery.min.js"></script>
+    <script src="/client/bower_components/jquery/dist/jquery.min.js"></script>
 
-    <script src="/client/js/lodash.min.js"></script>
+    <script src="/client/bower_components/lodash/dist/lodash.min.js"></script>
 
-    <script src="/client/js/bootstrap.min.js"></script>
+    <script src="/client/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <script src="/client/js/main.js"></script>
 </body>
