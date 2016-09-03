@@ -18,7 +18,7 @@ elseif(!empty(PATH)) _404();
     <title>CO487 Implementations</title>
 
     <link rel="stylesheet" href="/client/css/main.css">
-    <link rel="stylesheet" href="/client/bower_components/bootstrap/dist/bootstrap.min.css">
+    <link rel="stylesheet" href="/client/bower_components/bootstrap/dist/css/bootstrap.min.css">
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -41,7 +41,6 @@ elseif(!empty(PATH)) _404();
     <div id="links" style="border: 0; background: none; margin-bottom: 25px">
         <center>
             <h1 style="text-decoration: underline">CO487 Implementations</h1>
-            <p>by Andrei Savin</p>
         </center>
     </div>
     <div id="wrap">
