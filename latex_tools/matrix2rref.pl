@@ -2,52 +2,106 @@
 # -----------------------------------------------------------------
 # [latex_tools/matrix2rref]
 # 
-# Purpose       : Performas step-by-step Gauss-Jordan Elimination
-# 		  outputs everything in beautiful Latex format 
+# Purpose        : Performs step-by-step Gauss-Jordan Elimination
+#                  outputs everything in Latex format 
 #
-# Usage		: ./matrix2rref.pl '1 & 2 \\ 3 & 4'
-# 		: ./matrix2rred.pl
+# Usage          : ./matrix2rref.pl '1 & 2 \\ 3 & 4'
+#                : ./matrix2rred.pl
 #
-# Author        : Andrei Savin <andrei@andreisavin.com>
+# Author         : Andrei Savin <andrei@andreisavin.com>
 # -----------------------------------------------------------------
 use v6;
 
+#
+# Input
+#
+
 my $latex = @*ARGS || prompt("Enter the matrix in latex form (eg. 1 & 2 \\\\ 3 & 4) ");
 my @matrix = $latex.split(/\s*(\\)+s*/).map: { [.split(/\s*\&\s*/).map: { .trim }] };
+
+#
+# Row-reduce 
+#
+
 my @steps;
 
-#
-# Gauss-Jordan Algorithm
-#
-
 # $r1 <-> $r2
-sub swap( @M, $r1, $r2 ) {
-    @M[$r1, $r2] = @M[$r2, $r1];
-    @steps.push: { 'op' => 'swap', 'row1' => $r1, 'row2', $r2 };
+sub swap( @m, $r1, $r2 ) {
+	return if $r1 == $r2;
+	@m[$r1, $r2] = @m[$r2, $r1];
+	@steps.push: { 
+		'm' => @m.deepmap(*.clone), 
+		'op' => "R_$r1 <-> R_$r2" 
+	};
 }
 # $r *= $i
-sub multiply( @M, $r, $i ) {
-    @M[$r] = @M[$r].map: { [ $_*$i ] };
-    @steps.push: { 'op' => 'mult', 'row' => $r, 'i' => $i };
+sub multiply( @m, $r, $i ) {
+	@m[$r] »*=» $i;
+	@steps.push: { 
+		'm' => @m.deepmap(*.clone), 
+		'op' => "R_$r \\times $i" 
+	};
 }
-# $r1 += $s * $r2
-sub add( @M, $r1, $r2, $s ) {
-    @M[$r1] = @M[$r1].list »+» @M[$r2].map: { [ $_*$s ] };
-    @steps.push: { 'op' => 'add', 'row1' => $r1, 'row2' => $r2, 's' => $s };
-}
-
-#swap(@matrix, 0, 1);
-#multiply(@matrix, 0, 3);
-#add(@matrix, 2, 0, 1/2);
-#say @steps;
-
-my ($rows_cout, $cols_count) = +@matrix, +@matrix[0];
-my $col = 0;
-
-for @matrix.keys -> $row {
-    multiply( @matrix, $row, 1/@matrix[$row][$col]);
+# $r1 += $i * $r2
+sub add( @m, $r1, $r2, $i ) {
+	@m[$r1] »+=» ( @m[$r2] »*» $i );
+	@steps.push: { 
+		'm' => @m.deepmap(*.clone), 
+		'op' => "R_$r1 " 
+		~ (($i < 0) ?? "- " !! "+") 
+		~ ((abs($i) != 1) ?? " $i \times " !! "")  
+		~ "R_$r2" 
+	};
 }
 
-say @matrix;
+sub reduce(@m) {
+	my ($rows_count, $cols_count) = +@m, +@m[0];
+	my $col = 0;
 
-###### @todo 
+	for @m.keys -> $row {
+		return @m if $col >= $cols_count;
+		my $i = $row;
+
+		until @m[$i][$col] {
+			++$i == $rows_count or next;
+			$i = $row;
+			return @m if ++$col == $cols_count;
+		}
+
+		swap( @m, $i, $row );
+		multiply( @matrix, $row, 1/@matrix[$row][$col] );
+
+		for @matrix.keys.grep( * != $row ) -> $scan {
+			add(@matrix, $scan, $row, -1*@matrix[$scan][$col]);
+		}
+
+		$col++;
+	}
+
+	return @m;
+}
+
+my @initial = @matrix.deepmap(*.clone);
+my @final = reduce(@matrix);
+
+#
+# Print
+#
+say '
+\\begin{equation*}
+\\begin{split}
+\\begin{bmatrix}' 
+~  (join ' \\\\ ', @initial.map: { .join(' & ') })
+~'\\end{bmatrix}';
+
+for @steps {
+	say '& \\stackrel{' ~ $_{'op'} ~ '}{\\sim} \\begin{bmatrix}' 
+	~ join(' \\\\ ', $_{'m'}.map: { .join(' & ') })
+	~ '\\end{bmatrix}';
+	say '\\\\' unless $_{'m'} eq @final;
+}
+
+say '\\end{split}
+\\end{equation*}';
+
+
