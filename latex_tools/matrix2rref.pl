@@ -87,17 +87,19 @@ my @final = reduce(@matrix);
 #
 # Print
 #
+
+sub print_matrix(@m) {
+	return join ' \\\\ ', @m.map: { .join(' & ') };
+}
+
 say '
 \\begin{equation*}
 \\begin{split}
-\\begin{bmatrix}' 
-~  (join ' \\\\ ', @initial.map: { .join(' & ') })
-~'\\end{bmatrix}';
+	\\begin{bmatrix}' ~ print_matrix(@initial) ~'\\end{bmatrix}';
 
 for @steps {
-	say '& \\stackrel{' ~ $_{'op'} ~ '}{\\sim} \\begin{bmatrix}' 
-	~ join(' \\\\ ', $_{'m'}.map: { .join(' & ') })
-	~ '\\end{bmatrix}';
+	say '& \\stackrel{' ~ $_{'op'} ~ '}{\\sim}';
+   	say '\\begin{bmatrix}' ~ print_matrix($_{'m'}) ~ '\\end{bmatrix}';
 	say '\\\\' unless $_{'m'} eq @final;
 }
 
