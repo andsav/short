@@ -72,7 +72,7 @@ def make_node(expression: String):Node = {
       i += 1
     }
 
-    
+
 
   }
 
