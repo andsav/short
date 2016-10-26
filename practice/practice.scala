@@ -1,14 +1,11 @@
 #!/usr/bin/env scala
 /**
-  * [practice/classic]
-  *
-  * Purpose       : Classic interview questions
+  * [practice/practice]
   *
   * Usage         : ./classic.scala (q) (arg1, arg2...)
   * 
   * Help          : ./classic.scala
   *
-  * Author        : Andrei Savin <andrei@andreisavin.com>
 **/
 import scala.collection.mutable.HashMap
 
