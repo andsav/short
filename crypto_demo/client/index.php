@@ -2,7 +2,7 @@
 
 
 if(!empty(PATH) && PATH[0] == 'c' && sizeof(PATH) > 2) {
-    $path = CLIENT_ROOT . 'boxes/' . PATH[1] . '/' . PATH[2] . '.php';
+    $path = CLIENT_ROOT . 'boxes/' . PATH[1] . '/' . PATH[2] . '.html';
     if(file_exists($path)) require $path;
     else _404();
     die;
