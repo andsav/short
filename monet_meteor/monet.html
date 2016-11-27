@@ -1,0 +1,108 @@
+<body>
+
+</body>
+
+<template name="layout">
+    <header>
+        <h1>Monet</h1>
+    </header>
+    <nav>
+        <a href="http://trymonet.me/"><img src="x.png" alt="Evolve"></a> &nbsp;
+        <a href="{{pathFor 'stat'}}"><img src="easel.png" alt="Stats"></a> &nbsp;
+        <a href="{{pathFor 'upload'}}"><img src="arrow-up.png" alt="Upload"></a> &nbsp;
+        <a href="{{pathFor 'dev'}}"><img src="dev.png" alt="Dev Info"></a>
+    </nav>
+    <div id="content">
+        {{> yield}}
+    </div>
+    <footer>
+        Designed and coded at <a href="http://www.spartahack.com/">SpartaHacks 2015</a> by <a href="http://andreisavin.com">Andrei Savin</a>
+    </footer>
+</template>
+
+<template name="images">
+    <center>
+        Monet is a hipster AI trying to beat humans at photo editing.<br>
+        Click on the best version of this picture to help Monet improve its algorithm!<br>
+    </center>
+    <div id="imgTable" class="hidden">
+        <table>
+            {{#each table}}
+                <tr>
+                    {{#each cell}}
+                        <td data-ind="{{id}}">
+                            <img class="picture" src="activeImg/{{randomHash}}.jpg" id="img{{id}}">
+                        </td>
+                    {{/each}}
+                </tr>
+            {{/each}}
+        </table>
+        <center>
+            <img src="die.png" id="die"> <br>
+            Generation #{{config.generation}}, {{config.votes}} votes so far!
+        </center>
+    </div>
+
+    <center id="loading">
+        <img src="activeImg/{{randomHash}}.jpg" id="transparent">
+        <br>
+        <small>Please be patient, Monet is still painting...</small>
+    </center>
+</template>
+
+<template name="stat">
+    <center>Not enough data to compute meaningful statistics</center>
+</template>
+
+<template name="upload">
+    <center>Challenge Monet with your own Pictures! Coming soon...</center>
+</template>
+
+<template name="dev">
+    <center>
+        The following button triggers an evolution event. This is non-reversible and takes a LONG time. <br>
+        Clicking multiple times WILL crash the server. <br> <br>
+        <img src="windy.png" id="evol">
+    </center>
+    <h2>How does it work?</h2>
+    <p style="text-align: left">
+        Tl;dr, Monet is an evolving <a href="http://www.ai-junkie.com/ga/intro/gat1.html">genetic algorithm</a>.<br> <br>
+        First it classifies every image according to information extracted from its histogram (dominant colors, average colors, number of colors).<br>
+        This is a more or less arbitrary classification. The idea is that filters are adapted to color and brightness and not to the image's "meaning".
+        For Monet, there are exactly 76899 types of images. For every one of these images, it applies a predefined set of filters (contrast, saturation, blur, exposure etc). <br><br><br>
+        At each generation, there are 21 versions of Monet being generated, each with its predefined filters. <br>
+        The <em>fitness function</em> is you, the human being, voting for the best pictures. Human beings are excellent at intuitively computing what is beautiful. <br>
+        Monet starts with completely random filters, but using the principles of natural selection, it converges towards excellence. <br>
+    </p>
+    <h2>What happens at each generation?</h2>
+    <p style="text-align: left">
+        First, from the votes registered in the database, we select the <strong>best global adaptations</strong> <br>
+        We make all the genes slightly converge towards these optimal values (computing weighed averages with an element of randomness).<br>
+        This mimics natural selection.<br><br>
+
+        <!--
+        Then, within each "individual", we smoothen all the values, making <strong>neighbours converge</strong> towards one another (average with the average values in a radius) <br>
+        Why? Simply put, the 76899 types form a sort of continuum very dependent on their brightness and dominant color. <br>
+        Therefore a set of filters adapted to image #5000 has a lot of chances of being adapted to image #5001 and image #4999. <br>
+        This also corrects for some adaptations being excessively good on a very limited set of images.<br><br>
+        -->
+
+        Finally, we keep evolution from reaching a plateau by introducing completely <strong>random mutations</strong> uniformly within the population.<br><br>
+
+        Since this application is written in JavaScript and not running on a supercomputer, <strong>this takes about 45 minutes</strong>. <br>
+        Ideally, generation increment would run as a cronjob once a day.
+    </p>
+    <h2>Why are the results so ugly?</h2>
+    <p style="text-align: left">
+        Monet is still a baby. He needs some serious training before he becomes a professional photographer. You can help him improve by <a href="http://trymonet.me/">voting</a>!
+    </p>
+</template>
+
+<template name="vote">
+    <header style="height:100vh">
+        <h1>Monet apreciates your feedback!</h1>
+        <br>
+        <br>
+        <a href="http://trymonet.me/"><img src="check.png"></a>
+    </header>
+</template>
