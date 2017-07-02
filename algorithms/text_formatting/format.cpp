@@ -5,7 +5,7 @@
 #include <climits>
 #include <cmath>
 
-#define INF (double)INT_MAX
+#define INF (long)INT_MAX
 
 using namespace std;
 
@@ -16,20 +16,23 @@ struct ConstArr {
     pair<long, long> *active;
     long **lc;
     long def;
+    long n;
 
-    ConstArr(long n, long def = INF) : def(def) {
+    ConstArr(long n, long def = INF) : def(def), n(n) {
         active = new pair<long, long>[n];
 
         lc = new long *[n];
-        for (int i = 0; i < n; ++i) {
+        for (long i = 0; i < n; ++i) {
             lc[i] = new long[n];
         }
+
+        fill(lc[0], lc[0] + n, 0);
     }
 
     void set(long i, long j, long v) {
         lc[i][j] = v;
         active[i].first = min(active[i].first, j);
-        active[i].second = max(active[i].first, j);
+        active[i].second = max(active[i].second, j);
     }
 
     long get(long i, long j) {
@@ -39,13 +42,15 @@ struct ConstArr {
     }
 
     ~ConstArr() {
-        for (long i = 0; i <= sizeof(lc); ++i)
-            delete[] lc[i];
+        for (long i = 0; i < n; ++i)
+           delete[] lc[i];
         delete[] lc;
+        delete[] active;
     }
 };
 
 int main() {
+    cin.sync_with_stdio(false);
     cout.sync_with_stdio(false);
 
     long n, k, w, i, j, *cost, *keep;         // n words, at most w chars per line
@@ -61,23 +66,17 @@ int main() {
     //
     //  INITIALIZE
     //
-    words = new string[n];
-    ConstArr line_cost(n + 1), spaces(n + 1, -1);
+    cost = new long[n + 1];
+    fill(cost, cost + n + 1, INF);
+    keep = new long[n + 1];
+    cost[0] = keep[0] = 0;
 
+    words = new string[n + 1];
     for (i = 0; i < n; ++i) {
         cin >> words[i];
     }
-    cost = new long[n + 1];
 
-    fill(cost, cost + n + 1, INF);
-
-    keep = new long[n + 1];
-
-    for (i = 1; i <= n; ++i) {
-        spaces.set(0, i, 0);
-        line_cost.set(0, i, 0);
-    }
-    cost[0] = keep[0] = 0;
+    ConstArr line_cost(n + 1), spaces(n + 1, -1);
 
     //
     //  COMPUTE LINE COSTS
@@ -108,11 +107,12 @@ int main() {
     //  RETRIEVE WORDS
     //
     k = n;
-    while (keep[k] != 1) {
+    while (keep[k] > 1) {
         lines.push(make_pair(keep[k], k));
         k = keep[k] - 1;
     }
     lines.push(make_pair(keep[k], k));
+
 
     cout << cost[n] << " " << lines.size() << endl;
     while (!lines.empty()) {
