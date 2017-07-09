@@ -4,59 +4,70 @@
 #include <string>
 #include <climits>
 #include <cmath>
+#include <unordered_map>
 
 #define INF (long)INT_MAX
 
 using namespace std;
 
-/*
- * Emulate constant time initialization
- */
-struct ConstArr {
+struct Spaces {
     pair<long, long> *active;
-    long **lc;
-    long def;
-    long n;
+    unordered_map<int64_t, long> arr;
+    long def, n;
 
-    ConstArr(long n, long def = INF) : def(def), n(n) {
+    Spaces(long n, long def = INF) : def(def), n(n) {
+        arr.reserve(n * 81);
+
         active = new pair<long, long>[n];
-
-        lc = new long *[n];
-        for (long i = 0; i < n; ++i) {
-            lc[i] = new long[n];
-        }
-
-        fill(lc[0], lc[0] + n, 0);
+        for (long i = 0; i < n; ++i)
+            active[i] = make_pair(i, i);
     }
 
     void set(long i, long j, long v) {
-        lc[i][j] = v;
+        if (v == def)
+            return;
+
+        arr[k(i, j)] = v;
+
         active[i].first = min(active[i].first, j);
         active[i].second = max(active[i].second, j);
     }
 
-    long get(long i, long j) {
+    inline long get(long i, long j) {
+        if (i == 0)
+            return 0;
         if (j < active[i].first || j > active[i].second)
             return def;
-        return lc[i][j];
+
+        return arr[k(i, j)];
     }
 
-    ~ConstArr() {
-        for (long i = 0; i < n; ++i)
-           delete[] lc[i];
-        delete[] lc;
+    inline int64_t k(long i, long j) {
+        return ((int64_t) i << 32) + j;
+    }
+
+    inline long line_cost(long i, long j) {
+        return (i == 0)
+               ? 0
+               : (j < i || get(i, j) < 0)
+                 ? INF
+                 : (j == n - 1)
+                   ? 0
+                   : pow(arr[k(i, j)], 2);
+    }
+
+    ~Spaces() {
         delete[] active;
     }
 };
 
+long n, k, w, i, j, *cost, *keep;         // n words, at most w chars per line
+string *words;
+
+stack <pair<long, long>> lines;
+
 int main() {
-    cin.sync_with_stdio(false);
-    cout.sync_with_stdio(false);
-
-    long n, k, w, i, j, *cost, *keep;         // n words, at most w chars per line
-    string s, *words;
-
-    stack <pair<long, long>> lines;
+    std::ios::sync_with_stdio(false);
 
     //
     //  INPUT
@@ -71,12 +82,13 @@ int main() {
     keep = new long[n + 1];
     cost[0] = keep[0] = 0;
 
-    words = new string[n + 1];
+    words = new string[n];
     for (i = 0; i < n; ++i) {
         cin >> words[i];
     }
 
-    ConstArr line_cost(n + 1), spaces(n + 1, -1);
+    Spaces spaces(n + 1, -1);
+
 
     //
     //  COMPUTE LINE COSTS
@@ -84,21 +96,18 @@ int main() {
     for (i = 1; i <= n; ++i) {
         spaces.set(i, i, w - words[i - 1].length());
         for (j = i + 1; j <= n; ++j) {
-            spaces.set(i, j, spaces.get(i, j - 1) - words[j - 1].length() - 1);
-            if (spaces.get(i, j) <= 0) break;
-        }
-        for (j = i; j <= n && spaces.get(i, j) >= 0; ++j) {
-            line_cost.set(i, j, (j == n) ? 0 : pow(spaces.get(i, j), 2));
+            k = spaces.get(i, j - 1) - words[j - 1].length() - 1;
+            spaces.set(i, j, k);
+            if (k <= 0) break;
         }
     }
 
-    cost[0] = 0;
     for (j = 1; j <= n; ++j) {
-        for (i = j; i > 1 && line_cost.get(i, j) < INF; --i);
+        for (i = j; i > 1 && spaces.line_cost(i, j) < INF; --i);
         for (; i <= j; ++i) {
-            if (cost[i - 1] + line_cost.get(i, j) < cost[j]) {
+            if (cost[i - 1] + spaces.line_cost(i, j) < cost[j]) {
                 keep[j] = i;
-                cost[j] = cost[i - 1] + line_cost.get(i, j);
+                cost[j] = cost[i - 1] + spaces.line_cost(i, j);
             }
         }
     }
@@ -107,12 +116,11 @@ int main() {
     //  RETRIEVE WORDS
     //
     k = n;
-    while (keep[k] > 1) {
+    while (k >= 1 && keep[k] > 1) {
         lines.push(make_pair(keep[k], k));
         k = keep[k] - 1;
     }
     lines.push(make_pair(keep[k], k));
-
 
     cout << cost[n] << " " << lines.size() << endl;
     while (!lines.empty()) {
