@@ -4,6 +4,7 @@
   "description": "",
   "main": "run.js",
   "dependencies": {
+    "bignum": "^0.13.0",
     "bignumber.js": "^7.2.1"
   },
   "devDependencies": {
