@@ -5,14 +5,16 @@ const primes = {}
 let map_max = 0
 
 /**
- * Get primes lower than n with Sieve
+ * Get primes lower than n with Sieve, return a maximum of max primes
+ *
  * @param n
+ * @param max
  * @returns {Array}
  */
-export const getPrimes = function (n) {
+export const getPrimes = function (n, max = Infinity) {
     const primes = []
 
-    for (let i = 2; i < n; ++i) {
+    for (let i = 2; i < n && primes.length < max; ++i) {
         if (!(i in not_prime)) {
             primes.push(i)
             for (let j = 2; i * j < n; ++j) {
@@ -49,5 +51,5 @@ export const getPrimesMap = function (n) {
  * @returns {boolean}
  */
 export const isPrime = function (n) {
-    return n <= 1E6 ? n in getPrimesMap(n) : BigNum(n).probPrime() === true;
+    return n <= 1E6 ? (n in getPrimesMap(n + 1)) : BigNum(n).probPrime() === true
 }
