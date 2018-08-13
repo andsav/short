@@ -23,14 +23,12 @@ function nextState(board) {
     board.forEach((row, i) => {
         live.push([])
         row.forEach((cell, j) => {
-            console.log(i, j, liveNeighbours(i, j))
             live[live.length - 1].push(liveNeighbours(i, j))
         })
     })
 
     board.forEach((row, i) => {
         row.forEach((cell, j) => {
-            console.log(cell, live[i][j])
             board[i][j] = (cell === 1 && (live[i][j] === 2 || live[i][j] === 3)) || live[i][j] === 3 ? 1 : 0
         })
     })

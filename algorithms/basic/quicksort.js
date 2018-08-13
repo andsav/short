@@ -1,4 +1,4 @@
-const shuffle = function (A) {
+export const shuffle = function (A) {
     const rand = i => i + Math.floor(Math.random() * (A.length - 1 - i))
 
     const swap = function (i, j) {
@@ -12,7 +12,7 @@ const shuffle = function (A) {
     }
 }
 
-const quickSort = function (arr) {
+export const quickSort = function (arr) {
     shuffle(arr)
 
     const qs = function (A) {

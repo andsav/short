@@ -1,4 +1,4 @@
-class Heap {
+export class Heap {
     constructor(scoreFn = (x) => x) {
         this._scoreFn = scoreFn
         this._array = []
@@ -84,7 +84,3 @@ class Heap {
         this._bubbleUp(parentN)
     }
 }
-
-let a = Heap.heapify([8, 1, 4, 7, 3, 2])
-console.log(a.array)
-console.log(a.getSorted())

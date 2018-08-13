@@ -1,4 +1,4 @@
-const mergeSort = function (A) {
+export const mergeSort = function (A) {
     if (A.length <= 1) {
         return A
     }
@@ -26,5 +26,3 @@ const merge = function (A, B) {
 
     return ret
 }
-
-console.log(mergeSort([4, -2, 3, 99, 100, 232, 1, 5, 7, -5, -3, -4]))
