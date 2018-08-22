@@ -1,7 +1,7 @@
 /*
     Constant space
  */
-let partition = (A, pivot) => {
+const partition = (A, pivot) => {
     let swap = (i, j) => {
         let tmp = A[i]
         A[i] = A[j]
