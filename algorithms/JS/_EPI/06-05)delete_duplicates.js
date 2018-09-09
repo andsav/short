@@ -1,7 +1,9 @@
-function delete_duplicates(arr) {
+export function delete_duplicates(arr) {
     if (arr.length <= 1) return arr
+
     let n = arr.length
     let first_vacant = -1
+
     for (let i = 1; i < n; ++i) {
         if (first_vacant !== -1) {
             [arr[i], arr[first_vacant]] = [arr[first_vacant], arr[i]]
@@ -13,7 +15,6 @@ function delete_duplicates(arr) {
             }
         }
     }
+
     return arr.slice(0, n)
 }
-
-//console.log(delete_duplicates([1, 2, 2, 2, 2, 2, 3, 4, 5, 5, 6]))

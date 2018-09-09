@@ -4,13 +4,24 @@
     "description": "",
     "main": "run.js",
     "devDependencies": {
+        "babel-core": "^6.26.3",
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-preset-env": "^1.7.0",
-        "babel-register": "^6.26.0"
+        "babel-register": "^6.26.0",
+        "expect.js": "^0.3.1",
+        "mocha": "^5.2.0"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha --compilers js:babel-core/register --recursive"
+    },
+    "babel": {
+        "presets": [
+            "env"
+        ]
     },
     "author": "Andrei Savin",
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "npm": "^6.4.1"
+    }
 }

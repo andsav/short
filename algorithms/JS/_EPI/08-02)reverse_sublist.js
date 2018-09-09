@@ -1,6 +1,6 @@
 import {LinkedList} from "../data_structures/linked"
 
-function reverse(L, s, f) {
+export function reverse(L, s, f) {
     let curr = L.head
     let next, prev
     try {
@@ -28,11 +28,3 @@ function reverse(L, s, f) {
 
     }
 }
-
-/*
-let A = (new LinkedList(1)).append(2).append(3).append(4).append(5).append(6).append(7)
-
-console.log("" + A)
-reverse(A, 2, 5)
-console.log("" + A)
-*/

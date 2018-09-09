@@ -1,4 +1,4 @@
-function permutations(arr) {
+export function permutations(arr) {
     let ret = []
 
     let permute = (A, rest) => {

@@ -1,4 +1,4 @@
-const reverse_words = (s) => {
+export function reverse_words(s) {
     s = s.split('')
     s.reverse()
 
@@ -25,5 +25,3 @@ const reverse_words = (s) => {
 
     return s.join('')
 }
-
-//console.log(reverse_words("Alice likes Bob"))

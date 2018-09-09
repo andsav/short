@@ -1,4 +1,4 @@
-function merge(A, B) {
+export function merge(A, B) {
     let right = A.length - 1
     let n = A.length - B.length - 1
 
@@ -22,10 +22,3 @@ function merge(A, B) {
 
     return A
 }
-
-console.log(
-    merge(
-        [5, 15, 17, null, null, null, null],
-        [19, 21, 34, 45]
-    )
-)

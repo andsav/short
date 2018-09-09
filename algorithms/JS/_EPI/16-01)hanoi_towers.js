@@ -1,4 +1,4 @@
-function computeHanoi(n) {
+export function computeHanoi(n) {
     let steps = 0
     let pegs = [[], [], []]
 

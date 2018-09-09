@@ -1,4 +1,4 @@
-function distance(str1, str2) {
+export function distance(str1, str2) {
     let A = str1.split('')
     let B = str2.split('')
 
@@ -29,9 +29,3 @@ function distance(str1, str2) {
 
     return dp(0, 0)
 }
-
-/*
-console.log(
-    distance("saturday", "sundays"),
-    distance("polynomial", "exponential")
-)*/

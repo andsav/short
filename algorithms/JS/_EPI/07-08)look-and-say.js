@@ -1,4 +1,4 @@
-function lookandsay(n) {
+export function lookandsay(n) {
     let memo = Array(n + 1).fill(false)
     memo[1] = "1"
 
@@ -25,7 +25,3 @@ function lookandsay(n) {
 
     return rec(n)
 }
-
-/*console.log(
-    lookandsay(1), lookandsay(2), lookandsay(3), lookandsay(4)
-)*/

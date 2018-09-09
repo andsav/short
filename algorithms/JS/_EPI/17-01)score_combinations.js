@@ -1,4 +1,4 @@
-let score_combinations = (points, N) => {
+export function score_combinations(points, N) {
     let memo = Object.create(null)
 
     let dp = (i) => {
@@ -20,5 +20,3 @@ let score_combinations = (points, N) => {
 
     return dp(N)
 }
-
-console.log(score_combinations([2,3,7], 12))

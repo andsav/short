@@ -1,4 +1,4 @@
-function sample(A, k) {
+export function sample(A, k) {
     let swap = (i, j) => {
         let tmp = A[i]
         A[i] = A[j]
